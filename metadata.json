@@ -1,0 +1,6 @@
+{
+  "name": "Cepen Production",
+  "description": "Premium minimalist photography, videography, wedding, and drone production studio based in West Sumatra.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

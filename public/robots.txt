@@ -1,0 +1,6 @@
+Sitemap: https://www.cepenproduction.com/sitemap.xml
+User-agent: *
+Allow: /
+
+# Disallow admin or draft routes if any exist in future
+Disallow: /admin/
