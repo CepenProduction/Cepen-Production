@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TESTIMONIALS } from '../data';
 import { Testimonial } from '../types';
-import { Star, MessageSquare, Plus, Check, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Star, MessageSquare, Plus, Check, ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function Reviews() {
@@ -72,25 +72,30 @@ export default function Reviews() {
         
         {/* Section Heading info */}
         <div id="reviews-header" className="flex flex-col items-center justify-center text-center mb-12">
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-zinc-950">
+          <p className="font-mono text-[10px] sm:text-[11px] font-bold tracking-widest text-[#2b7fff] uppercase mb-2 flex items-center justify-center gap-1.5">
+            <Sparkles size={11} className="text-[#2b7fff] animate-pulse" />
+            TESTIMONIALS
+          </p>
+          <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-zinc-950">
             Kata mereka tentang kami
           </h2>
+          <div className="w-16 h-1 bg-[#2b7fff] rounded mt-3" />
         </div>
 
         {/* Dynamic Add Review Form */}
         {isFormOpen && (
           <div
             id="write-review-panel"
-            className="mb-12 bg-white border border-orange-500/30 p-6 sm:p-8 rounded-2xl shadow-xl max-w-2xl mx-auto text-left animate-slide-up"
+            className="mb-12 bg-white border border-blue-500/20 p-6 sm:p-8 rounded-2xl shadow-xl max-w-2xl mx-auto text-left animate-slide-up"
           >
             <h3 className="font-display font-bold text-zinc-950 text-sm sm:text-base uppercase tracking-wider mb-4 flex items-center space-x-2">
-              <Plus size={16} className="text-[#f95116]" />
+              <Plus size={16} className="text-[#2b7fff]" />
               <span>Tulis Ulasan Anda Untuk Cepen Production</span>
             </h3>
 
             {submitted ? (
-              <div className="bg-orange-50 border border-orange-100 p-4 text-orange-900 text-xs rounded-xl flex items-center space-x-2">
-                <Check size={16} className="text-orange-500" />
+              <div className="bg-blue-50 border border-blue-100 p-4 text-blue-900 text-xs rounded-xl flex items-center space-x-2">
+                <Check size={16} className="text-blue-500" />
                 <span>Terima kasih! Ulasan Anda berhasil ditambahkan di halaman ini.</span>
               </div>
             ) : (
@@ -106,7 +111,7 @@ export default function Reviews() {
                       value={newName}
                       onChange={(e) => setNewName(e.target.value)}
                       placeholder="Contoh: Linda & Farhan"
-                      className="w-full text-xs p-3 border border-zinc-200 bg-zinc-50 hover:border-zinc-300 focus:border-[#f95116] focus:bg-white outline-none rounded-lg transition-all"
+                      className="w-full text-xs p-3 border border-zinc-200 bg-zinc-50 hover:border-zinc-300 focus:border-[#2b7fff] focus:bg-white outline-none rounded-lg transition-all"
                     />
                   </div>
                   <div>
@@ -118,7 +123,7 @@ export default function Reviews() {
                       value={newRole}
                       onChange={(e) => setNewRole(e.target.value)}
                       placeholder="Contoh: Pengantin Wanita, Corporate PR"
-                      className="w-full text-xs p-3 border border-zinc-200 bg-zinc-50 hover:border-zinc-300 focus:border-[#f95116] focus:bg-white outline-none rounded-lg transition-all"
+                      className="w-full text-xs p-3 border border-zinc-200 bg-zinc-50 hover:border-zinc-300 focus:border-[#2b7fff] focus:bg-white outline-none rounded-lg transition-all"
                     />
                   </div>
                 </div>
@@ -133,7 +138,7 @@ export default function Reviews() {
                       value={newLoc}
                       onChange={(e) => setNewLoc(e.target.value)}
                       placeholder="Contoh: Bukittinggi, Padang, Solok"
-                      className="w-full text-xs p-3 border border-zinc-200 bg-zinc-50 hover:border-zinc-300 focus:border-[#f95116] focus:bg-white outline-none rounded-lg transition-all"
+                      className="w-full text-xs p-3 border border-zinc-200 bg-zinc-50 hover:border-zinc-300 focus:border-[#2b7fff] focus:bg-white outline-none rounded-lg transition-all"
                     />
                   </div>
                   <div>
@@ -172,7 +177,7 @@ export default function Reviews() {
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     placeholder="Tuliskan pengalaman berkesan Anda saat bekerja bersama tim fotografer dan videografer Cepen Production..."
-                    className="w-full text-xs p-3 border border-zinc-200 bg-zinc-50 hover:border-zinc-300 focus:border-[#f95116] focus:bg-white outline-none rounded-lg transition-all resize-none"
+                    className="w-full text-xs p-3 border border-zinc-200 bg-zinc-50 hover:border-zinc-300 focus:border-[#2b7fff] focus:bg-white outline-none rounded-lg transition-all resize-none"
                   />
                 </div>
 
@@ -186,7 +191,7 @@ export default function Reviews() {
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2.5 bg-[#f95116] hover:bg-zinc-950 text-white text-[10px] font-bold tracking-widest uppercase rounded-lg transition-colors cursor-pointer"
+                    className="px-5 py-2.5 bg-zinc-950 hover:bg-zinc-900 text-white text-[10px] font-bold tracking-widest uppercase rounded-lg transition-colors cursor-pointer"
                   >
                     Kirim Ulasan
                   </button>

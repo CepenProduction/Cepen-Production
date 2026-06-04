@@ -128,10 +128,16 @@ const GALLERY_ALBUMS: GalleryAlbum[] = [
     clientName: 'Pemprov Sumatera Barat',
     description: 'Liputan dokumenter kebudayaan berskala nasional. Menangkap dinamika kecepatan bertenaga, cipratan lumpur basah berwarna pekat, ketegangan wajah para joki pemberani, serta gegap gempita penonton saat merayakan tradisi balapan sapi Pacu Jawi Tanah Datar.',
     images: [
-      { url: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=1200', caption: 'Pekatnya cipratan lumpur membuktikan kecepatan penuh sang joki Pacu Jawi.' },
-      { url: 'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&q=80&w=1200', caption: 'Riuh ramai penonton lokal bersorak mendukung jagoannya di tepi sawah.' },
-      { url: 'https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&q=80&w=1200', caption: 'Detail persiapan sapi tangguh dipasangi kayu kemudi sebelum berlaga.' },
-      { url: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80&w=1200', caption: 'Ekspresi penuh determinasi dari sang joki menaklukan medan sawah berair.' }
+      { url: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=1200', caption: 'Festival Budaya Pacu Jawi 1' },
+      { url: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=900&h=1200', caption: 'Festival Budaya Pacu Jawi 2' },
+      { url: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=1200', caption: 'Festival Budaya Pacu Jawi 3' },
+      { url: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=900&h=1200', caption: 'Festival Budaya Pacu Jawi 4' },
+      { url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=1200', caption: 'Festival Budaya Pacu Jawi 5' },
+      { url: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=900&h=1200', caption: 'Festival Budaya Pacu Jawi 6' },
+      { url: 'https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&q=80&w=1200', caption: 'Festival Budaya Pacu Jawi 7' },
+      { url: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80&w=900&h=1200', caption: 'Festival Budaya Pacu Jawi 8' },
+      { url: 'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&q=80&w=1200', caption: 'Festival Budaya Pacu Jawi 9' },
+      { url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&q=80&w=900&h=1200', caption: 'Festival Budaya Pacu Jawi 10' }
     ]
   },
   {
@@ -184,7 +190,7 @@ const GALLERY_ALBUMS: GalleryAlbum[] = [
 ];
 
 interface GalleryViewProps {
-  onBackToHome: () => void;
+  onBackToHome: (targetSection?: string) => void;
   initialAlbumId?: string | null;
 }
 
@@ -262,24 +268,25 @@ export default function GalleryView({ onBackToHome, initialAlbumId = null }: Gal
               className="space-y-12 pb-24"
             >
               {/* Back breadcrumb */}
-              <div className="flex items-center justify-between border-b border-zinc-200 pb-6">
-                <button
-                  onClick={onBackToHome}
-                  className="group flex items-center gap-2 text-[11px] font-sans font-bold text-zinc-600 hover:text-blue-500 uppercase tracking-widest cursor-pointer transition-colors"
-                >
-                  <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-                  Kembali Ke Beranda
-                </button>
-                <div className="flex items-center gap-1.5 font-mono text-[10px] text-zinc-400 uppercase tracking-widest">
-                  <Sparkles size={11} className="text-blue-500 animate-pulse" />
-                  Eksplorasi Karya Premium
+              <div className="flex items-center justify-between pb-6">
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => onBackToHome('home')}
+                    className="group flex items-center justify-center w-9 h-9 rounded-full border border-zinc-200 bg-white text-zinc-750 hover:text-blue-500 hover:border-blue-500 cursor-pointer transition-all duration-350"
+                    title="Kembali ke Beranda"
+                  >
+                    <ArrowLeft size={16} className="group-hover:-translate-x-0.5 transition-transform" />
+                  </button>
+                  <div className="font-mono text-[9px] text-zinc-455 uppercase tracking-wider flex items-center gap-1.5">
+                    OUR GALLERY &nbsp;/&nbsp; <span className="font-bold text-zinc-800">PORTFOLIO</span>
+                  </div>
                 </div>
               </div>
 
               {/* Title Header */}
               <div className="text-center space-y-4 max-w-2xl mx-auto">
                 <span className="text-[10px] font-bold text-blue-500 tracking-[0.25em] uppercase block">
-                  CEPEN GALERI EKSKLUSIF
+                  Cepen Production
                 </span>
                 <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-zinc-950 uppercase leading-none">
                   CREATIVE EXHIBITION
@@ -290,25 +297,22 @@ export default function GalleryView({ onBackToHome, initialAlbumId = null }: Gal
               </div>
 
               {/* Category Filters bar */}
-              <div className="flex justify-center border-y border-zinc-100 py-3">
-                <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+              <div className="flex justify-center pb-8 mt-2">
+                <div className="flex flex-wrap gap-1 bg-zinc-100/80 border border-zinc-200 p-1.5 rounded-lg max-w-max mx-auto">
                   {(['all', 'wedding', 'prewedding', 'event', 'drone'] as const).map((cat) => {
                     const isActive = selectedCategory === cat;
+                    const label = cat === 'all' ? 'Semua' : cat === 'drone' ? 'Aero Cine' : cat;
                     return (
                       <button
                         key={cat}
                         onClick={() => setSelectedCategory(cat)}
-                        className={`text-[10px] font-sans tracking-widest uppercase transition-all duration-300 relative py-1 cursor-pointer ${
-                          isActive ? 'text-blue-500 font-bold' : 'text-zinc-500 hover:text-zinc-950'
+                        className={`px-4 py-2 rounded-md text-[11px] font-bold tracking-wider uppercase transition-all cursor-pointer ${
+                          isActive
+                            ? 'bg-zinc-950 text-white shadow-md font-extrabold'
+                            : 'text-zinc-500 hover:text-zinc-905 hover:bg-zinc-200/50'
                         }`}
                       >
-                        {cat === 'all' ? 'Semua' : cat === 'drone' ? 'Aero Cine' : cat}
-                        {isActive && (
-                          <motion.div
-                            layoutId="activeGalleryFilterUnderline"
-                            className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-blue-500"
-                          />
-                        )}
+                        {label}
                       </button>
                     );
                   })}
@@ -339,19 +343,14 @@ export default function GalleryView({ onBackToHome, initialAlbumId = null }: Gal
                       <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black via-black/30 to-transparent pointer-events-none" />
                       <div className="absolute inset-0 border border-white/5 rounded-3xl" />
 
-                      {/* Number of photos label inside */}
-                      <div className="absolute top-5 left-5 bg-black/40 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-white text-[9px] font-mono tracking-widest uppercase">
-                        {album.images.length} FOTO
-                      </div>
-
                       {/* Category Label */}
-                      <div className="absolute top-5 right-5 bg-blue-500 px-3 py-1 rounded-full text-white text-[8px] font-mono tracking-widest uppercase font-bold">
+                      <div className="absolute top-5 right-5 border border-white/60 bg-transparent px-3 py-1 rounded-full text-white text-[8px] font-mono tracking-widest uppercase font-bold">
                         {album.category}
                       </div>
 
                       {/* Bottom display info inside the cover */}
                       <div className="absolute bottom-6 inset-x-6 text-white space-y-2 select-none text-left">
-                        <div className="flex items-center gap-1.5 text-blue-400 text-[10px] font-sans font-medium">
+                        <div className="flex items-center gap-1.5 text-white text-[10px] font-sans font-medium">
                           <MapPin size={10} />
                           <span>{album.location}</span>
                         </div>
@@ -607,7 +606,11 @@ export default function GalleryView({ onBackToHome, initialAlbumId = null }: Gal
       </AnimatePresence>
 
       {/* Integrated simple footer for the gallery page */}
-      <Footer />
+      <Footer onNavigate={(view, sectionId) => {
+        if (view === 'home') {
+          onBackToHome(sectionId);
+        }
+      }} />
     </div>
   );
 }

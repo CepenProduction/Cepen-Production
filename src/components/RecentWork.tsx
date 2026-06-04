@@ -1,14 +1,33 @@
 import React, { useState } from 'react';
 import { PROJECTS } from '../data';
 import { ServiceCategory, Project } from '../types';
-import { X, ChevronLeft, ChevronRight, Share2, ArrowRight, ArrowUpRight, ChevronDown } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Share2, ArrowRight, ArrowUpRight, ChevronDown, MapPin, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface RecentWorkProps {
   onSeeMoreGallery?: () => void;
+  onSelectProject?: (albumId: string) => void;
 }
 
-export default function RecentWork({ onSeeMoreGallery }: RecentWorkProps) {
+const getAlbumIdForProject = (projId: string): string => {
+  const mapping: Record<string, string> = {
+    'proj1': 'album_1',
+    'proj2': 'album_2',
+    'proj3': 'album_6', // Pacu Jawi!
+    'proj4': 'album_9',
+    'proj5': 'album_3',
+    'proj6': 'album_4',
+    'proj7': 'album_5',
+    'proj8': 'album_8',
+    'proj9': 'album_7',
+    'proj10': 'album_6',
+    'proj11': 'album_1',
+    'proj12': 'album_7',
+  };
+  return mapping[projId] || 'album_1';
+};
+
+export default function RecentWork({ onSeeMoreGallery, onSelectProject }: RecentWorkProps) {
   const [selectedCategory, setSelectedCategory] = useState<ServiceCategory | 'all'>('all');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [visibleCount, setVisibleCount] = useState<number>(6);
@@ -67,49 +86,40 @@ export default function RecentWork({ onSeeMoreGallery }: RecentWorkProps) {
       <div className="max-w-6xl mx-auto">
         
         {/* Minimalist Heading Block */}
-        <div id="gallery-header" className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20 border-b border-zinc-200 pb-10">
-          <div className="text-left space-y-3">
-            <span className="font-sans text-xs font-semibold text-blue-600 uppercase tracking-widest mb-1.5 block">
+        <div id="gallery-header" className="flex flex-col items-center text-center justify-center gap-6 mb-16 pb-4">
+          <div className="flex flex-col items-center justify-center text-center">
+            <p className="font-mono text-[10px] sm:text-[11px] font-bold tracking-widest text-[#2b7fff] uppercase mb-2 flex items-center justify-center gap-1.5">
+              <Sparkles size={11} className="text-[#2b7fff] animate-pulse" />
               PORTFOLIO SHOWCASE
-            </span>
-            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-zinc-950 uppercase">
+            </p>
+            <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-zinc-950">
               SELECTED EXHIBITIONS
             </h2>
-            <p className="font-sans text-[14px] sm:text-[15px] text-zinc-600 font-light max-w-lg leading-relaxed pt-1">
+            <div className="w-16 h-1 bg-[#2b7fff] rounded mt-3 mb-4" />
+            <p className="font-sans text-[14px] sm:text-[15px] text-zinc-600 font-light max-w-lg leading-relaxed pt-1 mx-auto">
               Menangkap emosi murni dan keindahan kultural Sumatera Barat secara jujur, abadi, dan minimalis.
             </p>
           </div>
 
-          {/* Slashed Ultra-Minimal filter navigation */}
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-4 md:mt-0">
-            {categories.map((cat, idx) => (
-              <React.Fragment key={cat.value}>
-                <button
-                  id={`btn-filter-${cat.value}`}
-                  onClick={() => {
-                    setSelectedCategory(cat.value);
-                    setLightboxIndex(null);
-                    setVisibleCount(6);
-                  }}
-                  className={`text-[11px] font-sans tracking-widest uppercase transition-all duration-300 relative py-1 cursor-pointer ${
-                    selectedCategory === cat.value
-                      ? 'text-blue-600 font-bold scale-105'
-                      : 'text-zinc-500 hover:text-zinc-900'
-                  }`}
-                >
-                  {cat.label}
-                  {selectedCategory === cat.value && (
-                    <motion.div
-                      layoutId="activeFilterUnderline"
-                      className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-blue-600"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                </button>
-                {idx < categories.length - 1 && (
-                  <span className="text-zinc-300 font-light text-[10px] select-none">/</span>
-                )}
-              </React.Fragment>
+          {/* Capsule layout styled like the pricelist popup category selections */}
+          <div className="flex flex-wrap gap-1 bg-zinc-200/50 border border-zinc-200/80 p-1.5 rounded-lg max-w-max mx-auto">
+            {categories.map((cat) => (
+              <button
+                key={cat.value}
+                id={`btn-filter-${cat.value}`}
+                onClick={() => {
+                  setSelectedCategory(cat.value);
+                  setLightboxIndex(null);
+                  setVisibleCount(6);
+                }}
+                className={`px-4 py-2 rounded-md text-[11px] font-bold tracking-wider uppercase transition-all cursor-pointer ${
+                  selectedCategory === cat.value
+                    ? 'bg-zinc-950 text-white shadow-md font-extrabold'
+                    : 'text-zinc-500 hover:text-zinc-900 hover:bg-zinc-200/50'
+                }`}
+              >
+                {cat.label}
+              </button>
             ))}
           </div>
         </div>
@@ -122,69 +132,52 @@ export default function RecentWork({ onSeeMoreGallery }: RecentWorkProps) {
                 layout
                 id={`project-card-${proj.id}`}
                 key={proj.id}
-                onClick={() => openLightbox(proj)}
-                className="group cursor-pointer aspect-[3/4] w-full relative overflow-hidden rounded-[2rem] bg-zinc-900 border border-zinc-200/50 shadow-[0_15px_40px_-5px_rgba(0,0,0,0.15)] hover:shadow-[0_30px_60px_rgba(0,71,255,0.22)] transition-all duration-500 hover:-translate-y-1.5"
+                onClick={() => {
+                  if (onSelectProject) {
+                    onSelectProject(getAlbumIdForProject(proj.id));
+                  } else {
+                    openLightbox(proj);
+                  }
+                }}
+                className="group cursor-pointer flex flex-col space-y-4"
               >
-                {/* Backlit Background Artwork cover (The photo) */}
-                <img
-                  src={proj.imageUrl}
-                  alt={proj.title}
-                  referrerPolicy="no-referrer"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] ease-out brightness-[0.82] saturate-[0.85] scale-100 group-hover:scale-[1.04] group-hover:brightness-[0.92] group-hover:saturate-100"
-                />
-
-                {/* Minimal Dark Ambient Shadow overlay strictly protecting top & bottom text */}
-                <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none" />
-                <div className="absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-black/55 via-black/10 to-transparent pointer-events-none" />
-                
-                {/* Micro Ambient Glass Frame Effect */}
-                <div className="absolute inset-0 rounded-[2rem] border border-white/[0.08] pointer-events-none" />
-
-                {/* Album Cover Superposed Metadata HUD Layout */}
-                <div className="absolute inset-0 flex flex-col justify-between p-5 sm:p-6 pb-4 sm:pb-5 z-10 select-none">
+                {/* The premium folder design cover */}
+                <div className="aspect-[3/4] relative w-full overflow-hidden rounded-3xl bg-zinc-950 shadow-md group-hover:shadow-[0_20px_45px_rgba(0,71,255,0.12)] border border-zinc-200/40 transition-all duration-500 hover:-translate-y-1">
                   
-                  {/* TOP ROW: Album Title (Left), Arrow Up-Right 45° (Right) */}
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="text-left space-y-0.5">
-                      <h3 className="font-sans font-bold text-base sm:text-[17px] text-white tracking-tight leading-tight group-hover:text-blue-400 transition-colors duration-300">
-                        {proj.title}
-                      </h3>
-                      {proj.clientName && (
-                        <p className="font-sans text-[10px] tracking-wide text-neutral-450 font-normal opacity-85">
-                          by {proj.clientName}
-                        </p>
-                      )}
-                    </div>
+                  {/* Photo backdrop */}
+                  <img
+                    src={proj.imageUrl}
+                    alt={proj.title}
+                    referrerPolicy="no-referrer"
+                    className="absolute inset-0 w-full h-full object-cover brightness-[0.8] saturate-[0.88] transition-transform duration-[1.2s] ease-out group-hover:scale-105 group-hover:brightness-[0.9]"
+                  />
 
-                    {/* Classic 45-degree Up-Right Arrow inside an elegant pill button */}
-                    <div className="w-8.5 h-8.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md flex items-center justify-center text-white/95 group-hover:bg-[#2b7fff] group-hover:text-white group-hover:border-transparent transition-all duration-300 transform group-hover:rotate-45 shrink-0 shadow-[0_4px_12px_rgba(0,0,0,0.3)]">
-                      <ArrowUpRight size={16} />
-                    </div>
+                  {/* Cover Dark Gradient and Glass boundary */}
+                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black via-black/30 to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 border border-white/5 rounded-3xl" />
+
+                  {/* Category Label */}
+                  <div className="absolute top-5 right-5 border border-white/60 bg-transparent px-3 py-1 rounded-full text-white text-[8px] font-mono tracking-widest uppercase font-bold">
+                    {proj.category}
                   </div>
 
-                  {/* BOTTOM ROW: Category / Jenis (Left) & Location / Lokasi (Right) - Tighter & Smaller */}
-                  <div className="flex items-center justify-between border-t border-white/10 pt-2">
-                    
-                    {/* Jenis (wedding, prewedding, event, drone, etc.) */}
-                    <div className="text-left">
-                      <span className="text-[9px] font-sans font-semibold text-white tracking-widest uppercase py-0.5 px-2.5 rounded bg-white/10 border border-white/10 backdrop-blur-xs">
-                        {proj.category}
-                      </span>
+                  {/* Bottom display info inside the cover */}
+                  <div className="absolute bottom-6 inset-x-6 text-white space-y-2 select-none text-left">
+                    <div className="flex items-center gap-1.5 text-white text-[10px] font-sans font-medium">
+                      <MapPin size={10} />
+                      <span>{proj.location}</span>
                     </div>
-
-                    {/* Lokasi (e.g. Batusangkar, Tanah Datar) */}
-                    <div className="text-right">
-                      <span className="text-[10px] sm:text-[11px] font-sans font-normal text-neutral-300 tracking-wide">
-                        {proj.location}
-                      </span>
+                    <h3 className="font-sans font-bold text-lg leading-tight uppercase tracking-tight group-hover:text-blue-400 transition-colors duration-300">
+                      {proj.title}
+                    </h3>
+                    <div className="flex justify-between items-center text-[10px] text-zinc-300 border-t border-white/10 pt-2 font-mono">
+                      <span>{proj.clientName}</span>
+                      <span>{proj.date}</span>
                     </div>
-
                   </div>
-
                 </div>
 
-                {/* Accent glow on hover */}
-                <div className="absolute inset-x-0 bottom-0 h-1 bg-[#2b7fff] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center pointer-events-none" />
+
               </motion.div>
             );
           })}

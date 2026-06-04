@@ -1,7 +1,12 @@
+import React from 'react';
 import { Sparkles, ArrowUp, Instagram, Youtube, Heart, Facebook } from 'lucide-react';
 import Logo from './Logo';
 
-export default function Footer() {
+interface FooterProps {
+  onNavigate?: (view: 'home' | 'gallery', sectionId?: string) => void;
+}
+
+export default function Footer({ onNavigate }: FooterProps) {
   const handleScrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -16,6 +21,30 @@ export default function Footer() {
     { label: 'About', href: '#about' },
     { label: 'Contact', href: '#contact' }
   ];
+
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const targetId = href.replace('#', '');
+    if (targetId === 'gallery') {
+      if (onNavigate) {
+        onNavigate('gallery');
+      } else {
+        const galEl = document.getElementById('gallery');
+        if (galEl) {
+          window.scrollTo({ top: Math.max(0, galEl.offsetTop - 80), behavior: 'smooth' });
+        }
+      }
+    } else {
+      if (onNavigate) {
+        onNavigate('home', targetId);
+      } else {
+        const targetEl = document.getElementById(targetId);
+        if (targetEl) {
+          window.scrollTo({ top: Math.max(0, targetEl.offsetTop - 80), behavior: 'smooth' });
+        }
+      }
+    }
+  };
 
   return (
     <footer id="main-footer" className="bg-zinc-950 text-white pt-20 pb-12 border-t border-zinc-900 text-left">
@@ -95,6 +124,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
+                    onClick={(e) => handleLinkClick(e, link.href)}
                     className="text-zinc-400 hover:text-white text-xs font-light tracking-wide hover:underline transition-colors block"
                   >
                     {link.label}

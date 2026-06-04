@@ -7,6 +7,7 @@ import Clients from './components/Clients';
 import Pricelist from './components/Pricelist';
 import Reviews from './components/Reviews';
 import About from './components/About';
+import FAQ from './components/FAQ';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import GalleryView from './components/GalleryView';
@@ -27,21 +28,23 @@ export default function App() {
     }
 
     if (view === 'home') {
-      if (sectionId) {
-        // Allow time for home view components to mount
-        setTimeout(() => {
-          const targetEl = document.getElementById(sectionId);
-          if (targetEl) {
-            const offsetTop = targetEl.offsetTop - 80;
-            window.scrollTo({
-              top: offsetTop,
-              behavior: 'smooth',
-            });
-          }
-        }, 100);
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+      const targetId = sectionId || 'home';
+      // Allow time for home view components to mount fully
+      setTimeout(() => {
+        const targetEl = document.getElementById(targetId);
+        if (targetEl) {
+          const offsetTop = Math.max(0, targetEl.offsetTop - 80);
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth',
+          });
+        } else {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+          });
+        }
+      }, 100);
     } else {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -83,7 +86,10 @@ export default function App() {
           <Hero onAksesPricelist={handleOpenPricelist} />
 
           {/* 4. Filterable Project Gallery Showcase with trigger to Dedicated View */}
-          <RecentWork onSeeMoreGallery={() => handleNavigate('gallery')} />
+          <RecentWork 
+            onSeeMoreGallery={() => handleNavigate('gallery')} 
+            onSelectProject={(albumId) => handleNavigate('gallery', undefined, albumId)}
+          />
 
           {/* 5. Clients logos strip (corporate verification in grayscale) */}
           <Clients />
@@ -102,16 +108,19 @@ export default function App() {
           {/* 8. About Us Profile (Team image + paragraphs) */}
           <About />
 
+          {/* 8.5. Frequently Asked Questions accordion block */}
+          <FAQ />
+
           {/* 9. Contact inquiry form + pre-filled WhatsApp link sender */}
           <Contact preselectedService={selectedService} />
 
           {/* 11. Visual map & quick links Footer */}
-          <Footer />
+          <Footer onNavigate={handleNavigate} />
         </>
       ) : (
         /* Sempurna rendering Dedicated Gallery view */
         <GalleryView 
-          onBackToHome={() => handleNavigate('home')} 
+          onBackToHome={(sectionId) => handleNavigate('home', sectionId)} 
           initialAlbumId={selectedAlbumId}
         />
       )}
