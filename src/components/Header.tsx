@@ -5,8 +5,8 @@ import Logo from './Logo';
 
 interface HeaderProps {
   onAksesPricelist: () => void;
-  currentPage?: 'home' | 'gallery';
-  onNavigate?: (view: 'home' | 'gallery', sectionId?: string) => void;
+  currentPage?: 'home' | 'gallery' | 'admin';
+  onNavigate?: (view: 'home' | 'gallery' | 'admin', sectionId?: string) => void;
 }
 
 export default function Header({ onAksesPricelist, currentPage = 'home', onNavigate }: HeaderProps) {
@@ -15,6 +15,7 @@ export default function Header({ onAksesPricelist, currentPage = 'home', onNavig
   const [activeSegment, setActiveSegment] = useState('home');
 
   useEffect(() => {
+    if (currentPage === 'admin') return;
     if (currentPage === 'gallery') {
       setActiveSegment('gallery');
       const handleScrollMinimal = () => {
@@ -79,6 +80,10 @@ export default function Header({ onAksesPricelist, currentPage = 'home', onNavig
       }
     }
   };
+
+  if (currentPage === 'admin') {
+    return null;
+  }
 
   return (
     <header

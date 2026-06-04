@@ -1,45 +1,53 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, HelpCircle, MessageSquare, Sparkles } from 'lucide-react';
+import { FAQItem } from '../lib/db';
 
-interface FAQItem {
-  question: string;
-  answer: string;
+interface FAQProps {
+  faqs?: FAQItem[];
 }
 
 const FAQ_ITEMS: FAQItem[] = [
   {
+    id: "faq1",
     question: "Apakah Cepen Production melayani klien di luar wilayah Sumatera Barat?",
     answer: "Ya, tentu saja. Kami melayani dokumentasi prewedding, wedding, event, maupun aerial drone cinematic di seluruh Indonesia hingga destinasi internasional. Untuk proyek di luar area Sumatera Barat, biaya tambahan akomodasi, transportasi, dan perizinan lokal (bila ada) akan disesuaikan secara transparan dalam penawaran khusus."
   },
   {
+    id: "faq2",
     question: "Berapa lama estimasi pengerjaan editing foto dan video cinematic?",
     answer: "Kami menjaga kualitas kurasi dan grading warna dengan sangat teliti. Pratinjau foto pilihan (sneak peek) biasanya siap dikirim dalam 3 hari kerja. File foto kurasi lengkap siap dikirim secara digital dalam 14–20 hari kerja. Sementara album cetak berkualitas premium (Wooden Box Fine-Art) dan video cinematic berdurasi penuh diselesaikan dalam kurun waktu 30–45 hari kerja sesuai antrean produksi."
   },
   {
+    id: "faq3",
     question: "Bagaimana sistem pembayaran dan ketentuan booking tanggal?",
     answer: "Untuk mengamankan slot tanggal eksklusif Anda, silakan melakukan Down Payment (DP) sebesar 30% dari total nilai paket. Pelunasan sisa 70% dilakukan selambat-lambatnya H-3 sebelum pelaksanaan hari H acara atau sesi pemotretan dimulai. Pembayaran dilakukan secara resmi melalui transfer bank yang tertata rapi dalam sistem penagihan (invoice) kami."
   },
   {
+    id: "faq4",
     question: "Apakah kami bisa meminta file mentah (raw files) dari dokumentasi?",
     answer: "Semua paket kami sudah menyediakan hasil foto ter-retouch dan video cinematic terbaik yang dikurasi dengan detail profesional. Namun, apabila Anda membutuhkan seluruh file mentah (raw files) untuk keperluan arsip pribadi, Anda dapat menambahkannya sebagai addon dengan menyediakan media penyimpanan harddisk eksternal berkapasitas memadai secara gratis atau membelinya langsung di pricelist addon kami."
   },
   {
+    id: "faq5",
     question: "Apakah pilot drone Cepen Production bersertifikat resmi?",
     answer: "Betul sekali. Seluruh kru penerbang aerial drone kami merupakan pilot profesional yang memiliki sertifikasi pilot drone resmi dari lembaga berwenang (APDI/FASI). Kami mengedepankan keamanan terbang serta pemahaman regulasi udara untuk memastikan dokumentasi visual bernilai tinggi berjalan aman tanpa hambatan hukum di lokasi acara."
   },
   {
+    id: "faq6",
     question: "Bisakah kami memilih musik latar (soundtrack) untuk video pernikahan kami?",
     answer: "Kami sangat merekomendasikan sinergi pemilihan lagu. Tim kreatif kami memiliki akses ke pustaka audio berlisensi premium yang sangat cocok untuk storytelling emosional. Namun, kami juga sangat terbuka mendengar masukan referensi lagu favorit Anda yang memiliki nilai kenangan personal tinggi agar video cinematic terasa semakin dekat di hati."
   }
 ];
 
-export default function FAQ() {
+export default function FAQ({ faqs }: FAQProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+
+  const faqList = faqs || FAQ_ITEMS;
 
   return (
     <section id="faq" className="py-24 bg-zinc-50 border-t border-zinc-200/50">
@@ -62,7 +70,7 @@ export default function FAQ() {
 
         {/* Interactive Accordion List */}
         <div className="space-y-4">
-          {FAQ_ITEMS.map((item, index) => {
+          {faqList.map((item, index) => {
             const isOpen = openIndex === index;
             return (
               <div

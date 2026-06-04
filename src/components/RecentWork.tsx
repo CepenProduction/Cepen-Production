@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'motion/react';
 interface RecentWorkProps {
   onSeeMoreGallery?: () => void;
   onSelectProject?: (albumId: string) => void;
+  projects?: Project[];
 }
 
 const getAlbumIdForProject = (projId: string): string => {
@@ -27,15 +28,17 @@ const getAlbumIdForProject = (projId: string): string => {
   return mapping[projId] || 'album_1';
 };
 
-export default function RecentWork({ onSeeMoreGallery, onSelectProject }: RecentWorkProps) {
+export default function RecentWork({ onSeeMoreGallery, onSelectProject, projects }: RecentWorkProps) {
   const [selectedCategory, setSelectedCategory] = useState<ServiceCategory | 'all'>('all');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [visibleCount, setVisibleCount] = useState<number>(6);
 
+  const projectsList = projects || PROJECTS;
+
   // Filter projects based on selected category
   const filteredProjects = selectedCategory === 'all'
-    ? PROJECTS
-    : PROJECTS.filter(p => p.category === selectedCategory);
+    ? projectsList
+    : projectsList.filter(p => p.category === selectedCategory);
 
   const displayedProjects = filteredProjects.slice(0, visibleCount);
 

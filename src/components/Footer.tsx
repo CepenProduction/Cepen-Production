@@ -3,10 +3,11 @@ import { Sparkles, ArrowUp, Instagram, Youtube, Heart, Facebook } from 'lucide-r
 import Logo from './Logo';
 
 interface FooterProps {
-  onNavigate?: (view: 'home' | 'gallery', sectionId?: string) => void;
+  onNavigate?: (view: 'home' | 'gallery' | 'admin', sectionId?: string) => void;
+  currentView?: 'home' | 'gallery' | 'admin';
 }
 
-export default function Footer({ onNavigate }: FooterProps) {
+export default function Footer({ onNavigate, currentView }: FooterProps) {
   const handleScrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -167,17 +168,39 @@ export default function Footer({ onNavigate }: FooterProps) {
             </p>
           </div>
 
-          <button
-            id="btn-scroll-top"
-            aria-label="Scroll to top"
-            onClick={handleScrollToTop}
-            className="group flex items-center space-x-2 text-zinc-500 hover:text-white transition-colors text-xs font-mono font-bold tracking-widest uppercase cursor-pointer"
-          >
-            <span>Back to top</span>
-            <span className="p-2 border border-zinc-800 group-hover:border-zinc-500 rounded-full transition-colors shrink-0">
-              <ArrowUp size={12} className="group-hover:-translate-y-0.5 transition-transform" />
-            </span>
-          </button>
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6 justify-center">
+            {onNavigate && (
+              currentView === 'admin' ? (
+                <button
+                  id="btn-nav-home"
+                  onClick={() => onNavigate('home')}
+                  className="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors text-[10px] font-mono font-bold tracking-wider uppercase cursor-pointer rounded-full border border-zinc-800 hover:border-zinc-700 flex items-center justify-center"
+                >
+                  ◀ KEMBALI KE WEB
+                </button>
+              ) : (
+                <button
+                  id="btn-nav-admin"
+                  onClick={() => onNavigate('admin')}
+                  className="px-4 py-2 bg-zinc-900 hover:bg-zinc-850 text-zinc-500 hover:text-blue-400 transition-colors text-[10px] font-mono font-bold tracking-wider uppercase cursor-pointer rounded-full border border-zinc-800 hover:border-blue-950 flex items-center justify-center animate-pulse hover:animate-none"
+                >
+                  ⚙ KELOLA WEB (ADMIN)
+                </button>
+              )
+            )}
+
+            <button
+              id="btn-scroll-top"
+              aria-label="Scroll to top"
+              onClick={handleScrollToTop}
+              className="group flex items-center space-x-2 text-zinc-500 hover:text-white transition-colors text-xs font-mono font-bold tracking-widest uppercase cursor-pointer"
+            >
+              <span>Back to top</span>
+              <span className="p-2 border border-zinc-800 group-hover:border-zinc-500 rounded-full transition-colors shrink-0">
+                <ArrowUp size={12} className="group-hover:-translate-y-0.5 transition-transform" />
+              </span>
+            </button>
+          </div>
         </div>
 
       </div>

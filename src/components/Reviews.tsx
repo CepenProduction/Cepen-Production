@@ -4,8 +4,20 @@ import { Testimonial } from '../types';
 import { Star, MessageSquare, Plus, Check, ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
-export default function Reviews() {
-  const [reviewsList, setReviewsList] = useState<Testimonial[]>(TESTIMONIALS);
+interface ReviewsProps {
+  testimonials?: Testimonial[];
+  onAddTestimonial?: (newTestimonial: Testimonial) => void;
+}
+
+export default function Reviews({ testimonials, onAddTestimonial }: ReviewsProps) {
+  const [reviewsList, setReviewsList] = useState<Testimonial[]>(testimonials || TESTIMONIALS);
+  
+  React.useEffect(() => {
+    if (testimonials) {
+      setReviewsList(testimonials);
+    }
+  }, [testimonials]);
+
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [newName, setNewName] = useState('');
   const [newRole, setNewRole] = useState('Pengantin Baru');
@@ -32,7 +44,11 @@ export default function Reviews() {
       location: newLoc
     };
 
-    setReviewsList([newObj, ...reviewsList]);
+    if (onAddTestimonial) {
+      onAddTestimonial(newObj);
+    } else {
+      setReviewsList([newObj, ...reviewsList]);
+    }
     setNewName('');
     setNewMessage('');
     setSubmitted(true);
